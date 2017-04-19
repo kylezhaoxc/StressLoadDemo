@@ -4,35 +4,56 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:StressLoadDemo.View"
-             mc:Ignorable="d" 
-             Height="Auto" Width="Auto">
-    <Grid Background="#FFE5E5E5" Height="Auto">
-        <GroupBox x:Name="HubGroupBox" Header="IoT Hub" HorizontalAlignment="Left" Margin="10,14,0,0" VerticalAlignment="Top" Height="97" Width="491">
+             DataContext="{Binding Source={StaticResource Locator},Path=DashboardTab}"
+             Height="505" Width="Auto">
+    <Grid Background="#FFE5E5E5" Height="Auto" Width="805" >
+        <GroupBox x:Name="HubGroupBox" Header="IoT Hub" HorizontalAlignment="Left" Margin="10,14,0,0" VerticalAlignment="Top" Height="97" Width="491" FontSize="14">
             <Grid>
-                <Label x:Name="LbHubOwnerConnectionString" Content="Hub Owner Connection String" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top" Height="32"/>
-                <TextBox x:Name="TxtBoxHubOwnerConnectionString" HorizontalAlignment="Left" Height="23" Margin="184,9,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="272"/>
-                <Label x:Name="LbEventHubConnectionString" Content="Event Hub Connection String" HorizontalAlignment="Left" Margin="16,37,0,0" VerticalAlignment="Top" Height="32"/>
-                <TextBox x:Name="TxtBoxEventHubConnectionString" HorizontalAlignment="Left" Height="23" Margin="184,42,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="272"/>
+                <Label x:Name="LbHubOwnerConnectionString" Content="Hub Owner Connection String" HorizontalAlignment="Left" Margin="-7,4,0,0" VerticalAlignment="Top" Height="32" FontSize="14"/>
+                <TextBox x:Name="TxtBoxHubOwnerConnectionString" HorizontalAlignment="Left" Height="23" Margin="184,9,0,0" TextWrapping="Wrap" Text="{Binding HubOwnerConnectionString,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="272"/>
+                <Label x:Name="LbEventHubConnectionString" Content="Event Hub Connection String" HorizontalAlignment="Left" Margin="0,36,0,0" VerticalAlignment="Top" Height="32" FontSize="14"/>
+                <TextBox x:Name="TxtBoxEventHubConnectionString" HorizontalAlignment="Left" Height="23" Margin="184,42,0,0" TextWrapping="Wrap" Text="{Binding EventHubConnectionString,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="272"/>
             </Grid>
 
         </GroupBox>
-        <GroupBox x:Name="BatchGroupBox" Header="Batch Service" HorizontalAlignment="Left" Margin="10,116,0,0" VerticalAlignment="Top" Height="89" Width="491">
+        <GroupBox x:Name="BatchGroupBox" Header="Batch Service" HorizontalAlignment="Left" Margin="10,116,0,0" VerticalAlignment="Top" Height="89" Width="491" FontSize="14">
             <Grid>
-                <Label x:Name="LbBatchUrl" Content="Service Url" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top" Height="32"/>
-                <TextBox x:Name="TxtBoxBatchUrl" HorizontalAlignment="Left" Height="23" Margin="91,9,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="365"/>
-                <Label x:Name="LbAccountKey" Content="Account Key" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top"/>
-                <TextBox x:Name="TxtBoxAccountKey" HorizontalAlignment="Left" Height="22" Margin="91,38,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="365"/>
+                <Label x:Name="LbBatchUrl" Content="Service Url" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top" Height="32" FontSize="14"/>
+                <TextBox x:Name="TxtBoxBatchUrl" HorizontalAlignment="Left" Height="23" Margin="91,9,0,0" TextWrapping="Wrap" Text="{Binding BatchServiceUrl,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="365"/>
+                <Label x:Name="LbAccountKey" Content="Account Key" HorizontalAlignment="Left" Margin="0,34,0,0" VerticalAlignment="Top" FontSize="14"/>
+                <TextBox x:Name="TxtBoxAccountKey" HorizontalAlignment="Left" Height="22" Margin="91,38,0,0" TextWrapping="Wrap" Text="{Binding BatchAccountKey,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="365"/>
 
             </Grid>
 
         </GroupBox>
-        <GroupBox x:Name="SaGroupBox" Header="Storage Account" HorizontalAlignment="Left" Margin="10,207,0,0" VerticalAlignment="Top" Height="63" Width="491">
+        <GroupBox x:Name="SaGroupBox" Header="Storage Account" HorizontalAlignment="Left" Margin="10,207,0,0" VerticalAlignment="Top" Height="63" Width="491" FontSize="14">
             <Grid>
-                <Label x:Name="LbSaConnectionString" Content="Connection String" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top" Height="32"/>
-                <TextBox x:Name="TxtBoxSaConnectionString" HorizontalAlignment="Left" Height="23" Margin="131,9,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="325"/>
+                <Label x:Name="LbSaConnectionString" Content="Connection String" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top" Height="32" FontSize="14"/>
+                <TextBox x:Name="TxtBoxSaConnectionString" HorizontalAlignment="Left" Height="23" Margin="131,9,0,0" TextWrapping="Wrap" Text="{Binding StorageAccountConnectionString,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="325"/>
             </Grid>
 
         </GroupBox>
-        <Button x:Name="BtnStartTest" Content="Start Stress Load Test With Configuration Above" HorizontalAlignment="Left" Margin="10,279,0,15" VerticalAlignment="Top" Width="491" Height="33"/>
+        <Button x:Name="BtnStartTest" IsEnabled="{Binding CanStartTest}" Command="{Binding StartTest}" Content="Start Stress Load Test With Configuration Above" HorizontalAlignment="Left" Margin="10,294,0,0" VerticalAlignment="Top" Width="491" Height="33" FontSize="14"/>
+        <GroupBox x:Name="GroupHubDevice"  Header="Hub Device" HorizontalAlignment="Left" Margin="525,14,-228,0" VerticalAlignment="Top" Height="146" Width="275" FontSize="14">
+            <Canvas HorizontalAlignment="Left" Height="111" Margin="0,10,-2,0" VerticalAlignment="Top" Width="265">
+                <Image Source="/StressLoadDemo;component/ref_1.jpg" Height="140" Width="119" Canvas.Top="-15" Canvas.Left="59"/>
+            </Canvas>
+        </GroupBox>
+        <GroupBox x:Name="GroupHubMessage" Header="Hub Message"  HorizontalAlignment="Left" Margin="525,160,-228,0" VerticalAlignment="Top" Height="167" Width="275" FontSize="14">
+            <Canvas HorizontalAlignment="Left" Height="111" Margin="0,10,-2,0" VerticalAlignment="Top" Width="265">
+                <Image Source="/StressLoadDemo;component/ref_1.jpg" Height="140" Width="119" Canvas.Top="-16" Canvas.Left="60"/>
+            </Canvas>
+        </GroupBox>
+        <GroupBox x:Name="SummaryGroupBox" Header="Stress Load Test Summary" HorizontalAlignment="Left" Margin="0,332,0,0" VerticalAlignment="Top" Width="800" Height="Auto">
+            <Grid Height="Auto">
+
+                <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="189,113,0,0" VerticalAlignment="Top" Width="120"/>
+                <TextBlock x:Name="textBlock" Foreground="Black" Background="White" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="109" Width="768" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" UseLayoutRounding="False">
+                    
+                </TextBlock>
+                <Label x:Name="label" Content="IoT Hub Partition Id" HorizontalAlignment="Left" Margin="41,109,0,0" VerticalAlignment="Top" FontSize="14"/>
+            </Grid>
+        </GroupBox>
+
     </Grid>
 </UserControl>

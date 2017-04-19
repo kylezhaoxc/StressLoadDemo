@@ -15,6 +15,7 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
+using StressLoadDemo.Model;
 
 namespace StressLoadDemo.ViewModel
 {
@@ -43,6 +44,9 @@ namespace StressLoadDemo.ViewModel
             ////}
 
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<TabRequirementViewModel>();
+            SimpleIoc.Default.Register<TabDashboardViewModel>();
+            SimpleIoc.Default.Register<IStressDataProvider,StressDataMockProvider>();
         }
 
         public MainViewModel Main
@@ -52,7 +56,22 @@ namespace StressLoadDemo.ViewModel
                 return ServiceLocator.Current.GetInstance<MainViewModel>();
             }
         }
-        
+        public TabRequirementViewModel RequireTab
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<TabRequirementViewModel>();
+            }
+        }
+
+        public TabDashboardViewModel DashboardTab
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<TabDashboardViewModel>();
+            }
+        }
+
         public static void Cleanup()
         {
             // TODO Clear the ViewModels

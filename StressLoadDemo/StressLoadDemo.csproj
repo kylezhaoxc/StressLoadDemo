@@ -91,7 +91,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Helpers\SKUCalculator.cs" />
+    <Compile Include="Model\HubSku.cs" />
+    <Compile Include="Model\RequirementMessage.cs" />
+    <Compile Include="Model\VmSku.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\TabDashboardViewModel.cs" />
+    <Compile Include="ViewModel\TabRequirementViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\TabDashboardView.xaml.cs">
       <DependentUpon>TabDashboardView.xaml</DependentUpon>
@@ -133,6 +139,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ref_1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

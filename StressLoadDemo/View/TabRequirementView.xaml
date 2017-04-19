@@ -5,16 +5,22 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:StressLoadDemo.View"
              mc:Ignorable="d" 
+             DataContext="{Binding Source={StaticResource Locator},Path=RequireTab}"
              d:DesignHeight="300" Width="Auto">
-    <Grid Background="#FFE5E5E5" Width="Auto">
-        <Label x:Name="LbExpectedDeviceCount" Content="Expected  Device Count" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top" Height="32"/>
-        <TextBox x:Name="TxtBoxExpectedDeviceCount" HorizontalAlignment="Left" Height="23" Margin="150,9,15,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="235"/>
-        <Label x:Name="LbExpectedMsgFreq" Content="Expected Message per Minute" HorizontalAlignment="Left" Margin="10,47,0,0" VerticalAlignment="Top" Height="32"/>
-        <TextBox x:Name="TxtBoxExpectedMsgFreq" HorizontalAlignment="Left" Height="23" Margin="185,52,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="200"/>
-        <Label x:Name="LbExpectedDuration" Content="Expected Test Duration(in Minute)" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top" Height="32"/>
-        <TextBox x:Name="TxtBoxExpectedDuration" HorizontalAlignment="Left" Height="23" Margin="204,97,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="181"/>
-        <Button x:Name="BtnSwitchTab" Content="Go Assign Azure Resource" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top" Width="375" Height="25" />
-        <TextBox x:Name="TxtBoxRecommendationMsg" HorizontalAlignment="Left" Height="75" Margin="10,185,0,0" TextWrapping="Wrap" Text="Calculator" VerticalAlignment="Top" Width="375"/>
+    <Grid Background="#FFE5E5E5" Width="400">
+        <Label x:Name="LbExpectedDeviceCount" Content="Expected Device Count" HorizontalAlignment="Left" Margin="0,4,0,0" VerticalAlignment="Top" Height="32" FontSize="14"/>
+        <TextBox x:Name="TxtBoxExpectedDeviceCount" HorizontalAlignment="Left" Height="23" Margin="235,9,0,0" TextWrapping="Wrap" Text="{Binding TotalDevice,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="150"/>
+        <Label x:Name="LbExpectedMsgFreq" Content="Expected Message per Minute" HorizontalAlignment="Left" Margin="0,47,0,0" VerticalAlignment="Top" Height="32" FontSize="14"/>
+        <TextBox x:Name="TxtBoxExpectedMsgFreq" HorizontalAlignment="Left" Height="23" Margin="235,52,0,0" TextWrapping="Wrap" Text="{Binding MessageFreq,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="150"/>
+        <Label x:Name="LbExpectedDuration" Content="Expected Test Duration(in Minute)" HorizontalAlignment="Left" Margin="0,92,0,0" VerticalAlignment="Top" Height="32" FontSize="14"/>
+        <TextBox x:Name="TxtBoxExpectedDuration" HorizontalAlignment="Left" Height="23" Margin="235,97,0,0" TextWrapping="Wrap" Text="{Binding TestDuration,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="150"/>
+        <Button x:Name="BtnSwitchTab" IsEnabled="{Binding ButtonEnabled}" Command="{Binding MoveOn }" Content="Go Assign Azure Resource" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top" Width="375" Height="25" FontSize="14"/>
+        <Label x:Name="LbRecoHint" Content="Recommended Azure Resource:" HorizontalAlignment="Left" Margin="10,170,0,0" VerticalAlignment="Top" Height="32" FontSize="14"/>
+        <Label x:Name="LbHub" Content="IoT Hub" HorizontalAlignment="Left" Margin="10,202,0,0" VerticalAlignment="Top" Height="32" FontSize="14"/>
+        <Label x:Name="LbHubDetail" Content="{Binding HubSkuRecommendation}" HorizontalAlignment="Left" Margin="120,202,0,0" VerticalAlignment="Top" Height="32" FontSize="14" />
+        <Label x:Name="LbVm" Content="Virtual Machine" HorizontalAlignment="Left" Margin="10,234,0,0" VerticalAlignment="Top" Height="32" FontSize="14"/>
+        <Label x:Name="LbVmDetail" Content="{Binding VmSkuRecommendation}" HorizontalAlignment="Left" Margin="120,234,0,0" VerticalAlignment="Top" Height="32" FontSize="14" />
+
     </Grid>
 
 </UserControl>

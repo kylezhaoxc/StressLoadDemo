@@ -6,16 +6,16 @@
         xmlns:local="clr-namespace:StressLoadDemo"
         xmlns:view="clr-namespace:StressLoadDemo.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="Auto" Width="525"
-        DataContext="{Binding Source={StaticResource Locator}, Path=Main}" SizeToContent="WidthAndHeight"
+         Title="MainWindow" Height="Auto" Width="525"
+        DataContext="{Binding Source={StaticResource Locator}, Path=Main}" SizeToContent="WidthAndHeight" FontSize="14"
         >
     <Grid Height="Auto">
-        <TabControl x:Name="TabControl" HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="517">
-            <TabItem Header="TabItem">
+        <TabControl x:Name="TabControl" SelectedIndex="{Binding SelectedTabIndex}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+            <TabItem Header="TestSpec" >
                 <view:TabRequirementView/>
             </TabItem>
-            <TabItem Header="TabItem">
-               <view:TabDashboardView/>
+            <TabItem Header="Dashboard">
+               <view:TabDashboardView />
             </TabItem>
         </TabControl>
 
