@@ -1,8 +1,4 @@
-using System.Collections.ObjectModel;
-using System.Data;
-using System.Windows.Controls;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using StressLoadDemo.Model;
 
@@ -25,35 +21,35 @@ namespace StressLoadDemo.ViewModel
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        private readonly IStressDataProvider dataProvider;
+        private readonly IStressDataProvider _dataProvider;
 
-        private int selectedTabIndex;
-        private bool testStart;
+        private int _selectedTabIndex;
+        private bool _testStart;
         public int SelectedTabIndex
         {
-            get { return selectedTabIndex; }
+            get { return _selectedTabIndex; }
             set
             {
-                selectedTabIndex = value;
+                _selectedTabIndex = value;
                 RaisePropertyChanged();
             }
         }
 
         public bool TestStart
         {
-            get { return testStart;}
+            get { return _testStart;}
             set
             {
                 if (value)
                 {
-                    Messenger.Default.Send<IStressDataProvider>(dataProvider, "StartTest");
+                    Messenger.Default.Send<IStressDataProvider>(_dataProvider, "StartTest");
                 }
             }
         }
         
         public MainViewModel(IStressDataProvider provider)
         {
-            dataProvider = provider;
+            _dataProvider = provider;
             Messenger.Default.Register<RequirementMessage>(
                 this,
                 "AppendRequirementParam",
@@ -65,11 +61,11 @@ namespace StressLoadDemo.ViewModel
 
         public void AppendToProvider(RequirementMessage message)
         {
-            dataProvider.NumOfVm = message.VmCount.ToString();
-            dataProvider.DevicePerVm = message.NumberOfDevicePerVm.ToString();
-            dataProvider.ExpectTestDuration = message.TestDuration.ToString();
-            dataProvider.MessagePerMinute = message.MessagePerMinPerDevice;
-            dataProvider.VmSize = message.AzureVmSize.ToString();
+            _dataProvider.NumOfVm = message.VmCount.ToString();
+            _dataProvider.DevicePerVm = message.NumberOfDevicePerVm.ToString();
+            _dataProvider.ExpectTestDuration = message.TestDuration.ToString();
+            _dataProvider.MessagePerMinute = message.MessagePerMinPerDevice;
+            _dataProvider.VmSize = message.AzureVmSize.ToString();
         }
     }
 }

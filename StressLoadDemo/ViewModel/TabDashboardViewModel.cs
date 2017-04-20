@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media.Media3D;
-using System.Windows.Media.TextFormatting;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using Microsoft.Practices.ServiceLocation;
 using StressLoadDemo.Model;
 
 namespace StressLoadDemo.ViewModel
@@ -29,21 +23,21 @@ namespace StressLoadDemo.ViewModel
         private const double CanvasWidth = 265;
         private const double CanvasHeight = 111;
 
-        private IStressDataProvider dataProvider;
+        private readonly IStressDataProvider _dataProvider;
 
-        private string hubOwnerConnectionString;
-        private string eventHubConnectionString;
-        private string batchServiceUrl;
-        private string batchAccountKey;
-        private string storageAccountConnectionString;
-        private Visibility summaryVisibility;
-        private bool canStartTest;
-        private System.Timers.Timer refreshDataTimer;
+        private string _hubOwnerConnectionString;
+        private string _eventHubConnectionString;
+        private string _batchServiceUrl;
+        private string _batchAccountKey;
+        private string _storageAccountConnectionString;
+        private Visibility _summaryVisibility;
+        private bool _canStartTest;
+        private readonly System.Timers.Timer _refreshDataTimer;
 
-        private double deviceRealTimeNumber, messageRealTimeNumber;
-        private ObservableCollection<MyLine> deviceLines,messageLines;
-        private List<MyLine> deviceLineBuffer,messageLineBuffer;
-        private Queue<double> deviceNumberBuffer,messageNumberBuffer;
+        private double _deviceRealTimeNumber, _messageRealTimeNumber;
+        private ObservableCollection<MyLine> _deviceLines,_messageLines;
+        private List<MyLine> _deviceLineBuffer,_messageLineBuffer;
+        private Queue<double> _deviceNumberBuffer,_messageNumberBuffer;
         /// <summary>
         /// Initializes a new instance of the TabDashboardViewModel class.
         /// </summary>
@@ -52,26 +46,26 @@ namespace StressLoadDemo.ViewModel
             Messenger.Default.Register<IStressDataProvider>(
                 this,
                 "StartTest",
-                data=> processRunConfigValue(data)
+                data=> ProcessRunConfigValue(data)
                 );
-            dataProvider = provider;
-            summaryVisibility=Visibility.Hidden;
-            canStartTest = false;
-            refreshDataTimer = new System.Timers.Timer();
-            refreshDataTimer.Elapsed += observeData;
-            refreshDataTimer.AutoReset = true;
+            _dataProvider = provider;
+            _summaryVisibility=Visibility.Hidden;
+            _canStartTest = false;
+            _refreshDataTimer = new System.Timers.Timer();
+            _refreshDataTimer.Elapsed += ObserveData;
+            _refreshDataTimer.AutoReset = true;
             //fetch data and refresh UI 1 time/sec
-            refreshDataTimer.Interval = 300;
+            _refreshDataTimer.Interval = 300;
         }
 
         #region BindingProperties
 
         public Visibility SummaryVisibility
         {
-            get { return summaryVisibility; }
+            get { return _summaryVisibility; }
             set
             {
-                summaryVisibility = value;
+                _summaryVisibility = value;
                 RaisePropertyChanged();
             }
         }
@@ -80,21 +74,21 @@ namespace StressLoadDemo.ViewModel
         {
             get
             {
-                return canStartTest;
+                return _canStartTest;
             }
             set
             {
-                canStartTest = value;
+                _canStartTest = value;
                 RaisePropertyChanged();
             }
         }
 
         public string HubOwnerConnectionString
         {
-            get { return hubOwnerConnectionString;}
+            get { return _hubOwnerConnectionString;}
             set
             {
-                hubOwnerConnectionString = value;
+                _hubOwnerConnectionString = value;
                 RaisePropertyChanged();
                 TryActivateButton();
             }
@@ -104,11 +98,11 @@ namespace StressLoadDemo.ViewModel
         {
             get
             {
-                return eventHubConnectionString;
+                return _eventHubConnectionString;
             }
             set
             {
-                eventHubConnectionString = value;
+                _eventHubConnectionString = value;
                 RaisePropertyChanged();
                 TryActivateButton();
 
@@ -117,10 +111,10 @@ namespace StressLoadDemo.ViewModel
 
         public string BatchServiceUrl
         {
-            get { return batchServiceUrl;}
+            get { return _batchServiceUrl;}
             set
             {
-                batchServiceUrl = value;
+                _batchServiceUrl = value;
                 RaisePropertyChanged();
                 TryActivateButton();
             }
@@ -128,10 +122,10 @@ namespace StressLoadDemo.ViewModel
 
         public string BatchAccountKey
         {
-            get { return batchAccountKey;}
+            get { return _batchAccountKey;}
             set
             {
-                batchAccountKey = value;
+                _batchAccountKey = value;
                 RaisePropertyChanged();
                 TryActivateButton();
             }
@@ -139,10 +133,10 @@ namespace StressLoadDemo.ViewModel
 
         public string StorageAccountConnectionString
         {
-            get { return storageAccountConnectionString;}
+            get { return _storageAccountConnectionString;}
             set
             {
-                storageAccountConnectionString = value;
+                _storageAccountConnectionString = value;
                 RaisePropertyChanged();
                 TryActivateButton();
             }
@@ -159,10 +153,10 @@ namespace StressLoadDemo.ViewModel
 
         public ObservableCollection<MyLine> MessageLines
         {
-            get { return messageLines; }
+            get { return _messageLines; }
             set
             {
-                messageLines = value;
+                _messageLines = value;
                 RaisePropertyChanged();
             }
         }
@@ -170,56 +164,56 @@ namespace StressLoadDemo.ViewModel
         {
             get
             {
-                return deviceLines;
+                return _deviceLines;
             }
             set
             {
-                deviceLines = value;
+                _deviceLines = value;
                 RaisePropertyChanged();
             }
         }
 
         public double MessageRealTimeNumber
         {
-            get { return messageRealTimeNumber; }
+            get { return _messageRealTimeNumber; }
             set
             {
-                messageRealTimeNumber = value;
+                _messageRealTimeNumber = value;
                 RaisePropertyChanged();
             }
         }
 
         public double DeviceRealTimeNumber
         {
-            get { return deviceRealTimeNumber; }
+            get { return _deviceRealTimeNumber; }
             set
             {
-                deviceRealTimeNumber = value;
+                _deviceRealTimeNumber = value;
                 RaisePropertyChanged();
             }
         }
-        void observeData(Object source, System.Timers.ElapsedEventArgs e)
+        void ObserveData(Object source, System.Timers.ElapsedEventArgs e)
         {
-            DeviceRealTimeNumber = dataProvider.GetDeviceNumber();
-            MessageRealTimeNumber = dataProvider.GetMessageNumber();
-            messageNumberBuffer.Enqueue(messageRealTimeNumber);
-            deviceNumberBuffer.Enqueue(DeviceRealTimeNumber);
-            if (deviceNumberBuffer.Count > CanvasWidth)
+            DeviceRealTimeNumber = _dataProvider.GetDeviceNumber();
+            MessageRealTimeNumber = _dataProvider.GetMessageNumber();
+            _messageNumberBuffer.Enqueue(_messageRealTimeNumber);
+            _deviceNumberBuffer.Enqueue(DeviceRealTimeNumber);
+            if (_deviceNumberBuffer.Count > CanvasWidth)
             {
-                deviceNumberBuffer.Dequeue();
+                _deviceNumberBuffer.Dequeue();
             }
-            if (messageNumberBuffer.Count > CanvasWidth)
+            if (_messageNumberBuffer.Count > CanvasWidth)
             {
-                messageNumberBuffer.Dequeue();
+                _messageNumberBuffer.Dequeue();
             }
-            transformDataToLines(deviceNumberBuffer.ToList(),ref deviceLineBuffer);
-            transformDataToLines(messageNumberBuffer.ToList(), ref messageLineBuffer);
+            TransformDataToLines(_deviceNumberBuffer.ToList(),ref _deviceLineBuffer);
+            TransformDataToLines(_messageNumberBuffer.ToList(), ref _messageLineBuffer);
 
-            DeviceLines = new ObservableCollection<MyLine>(deviceLineBuffer);
-            MessageLines = new ObservableCollection<MyLine>(messageLineBuffer);
+            DeviceLines = new ObservableCollection<MyLine>(_deviceLineBuffer);
+            MessageLines = new ObservableCollection<MyLine>(_messageLineBuffer);
         }
 
-        void transformDataToLines(List<double> data,ref List<MyLine> targetLines)
+        void TransformDataToLines(List<double> data,ref List<MyLine> targetLines)
         {
             targetLines = new List<MyLine>();
             var maxY = data.Max();
@@ -240,29 +234,29 @@ namespace StressLoadDemo.ViewModel
             });
             targetLines = temp;
         }
-        void processRunConfigValue(IStressDataProvider provider)
+        void ProcessRunConfigValue(IStressDataProvider provider)
         {
-            provider.BatchKey = batchAccountKey;
-            provider.HubOwnerConectionString = hubOwnerConnectionString;
-            provider.EventHubConectionString = eventHubConnectionString;
-            provider.BatchUrl = batchServiceUrl;
-            provider.StorageAccountConectionString = storageAccountConnectionString;
+            provider.BatchKey = _batchAccountKey;
+            provider.HubOwnerConectionString = _hubOwnerConnectionString;
+            provider.EventHubConectionString = _eventHubConnectionString;
+            provider.BatchUrl = _batchServiceUrl;
+            provider.StorageAccountConectionString = _storageAccountConnectionString;
             provider.Run();
 
             DeviceLines=new ObservableCollection<MyLine>();
             MessageLines= new ObservableCollection<MyLine>();
-            deviceNumberBuffer = new Queue<double>();
-            messageNumberBuffer = new Queue<double>();
-            refreshDataTimer.Enabled = true;
+            _deviceNumberBuffer = new Queue<double>();
+            _messageNumberBuffer = new Queue<double>();
+            _refreshDataTimer.Enabled = true;
         }
 
         void TryActivateButton()
         {
-            if (!(string.IsNullOrEmpty(hubOwnerConnectionString)||
-                string.IsNullOrEmpty(eventHubConnectionString)||
-                string.IsNullOrEmpty(batchAccountKey)||
-                string.IsNullOrEmpty(batchServiceUrl)||
-                string.IsNullOrEmpty(storageAccountConnectionString))
+            if (!(string.IsNullOrEmpty(_hubOwnerConnectionString)||
+                string.IsNullOrEmpty(_eventHubConnectionString)||
+                string.IsNullOrEmpty(_batchAccountKey)||
+                string.IsNullOrEmpty(_batchServiceUrl)||
+                string.IsNullOrEmpty(_storageAccountConnectionString))
                 )
             {
                 CanStartTest=true;

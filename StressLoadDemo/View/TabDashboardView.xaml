@@ -71,11 +71,11 @@
         <GroupBox x:Name="SummaryGroupBox" Header="Stress Load Test Summary" HorizontalAlignment="Left" Margin="0,332,0,0" VerticalAlignment="Top" Width="800" Height="Auto">
             <Grid Height="Auto">
 
-                <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="189,113,0,0" VerticalAlignment="Top" Width="120"/>
-                <TextBlock x:Name="textBlock" Foreground="Black" Background="White" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="109" Width="768" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" UseLayoutRounding="False">
+                <ComboBox x:Name="ComboBox" HorizontalAlignment="Left" Margin="189,113,0,0" VerticalAlignment="Top" Width="120"/>
+                <TextBlock x:Name="TextBlock" Foreground="Black" Background="White" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="109" Width="768" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" UseLayoutRounding="False">
 
                 </TextBlock>
-                <Label x:Name="label" Content="IoT Hub Partition Id" HorizontalAlignment="Left" Margin="41,109,0,0" VerticalAlignment="Top" FontSize="14"/>
+                <Label x:Name="Label" Content="IoT Hub Partition Id" HorizontalAlignment="Left" Margin="41,109,0,0" VerticalAlignment="Top" FontSize="14"/>
             </Grid>
         </GroupBox>
 

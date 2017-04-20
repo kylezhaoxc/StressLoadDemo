@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Dynamic;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using StressLoadDemo.Helpers;
@@ -18,26 +16,26 @@ namespace StressLoadDemo.ViewModel
     
     public class TabRequirementViewModel : ViewModelBase
     {
-        private int totalDevice;
-        private int messagePerMinute;
-        private int testDuration;
-        private string iothubrecommendation;
-        private string vmRecommendation;
-        private bool buttonEnabled;
-        private IStressDataProvider dataProvider;
-        private MainViewModel MainVM;
-        private VmSku vmInfo;
-        private HubSku hubInfo;
+        private int _totalDevice;
+        private int _messagePerMinute;
+        private int _testDuration;
+        private string _iothubrecommendation;
+        private string _vmRecommendation;
+        private bool _buttonEnabled;
+        private IStressDataProvider _dataProvider;
+        private MainViewModel _mainVm;
+        private VmSku _vmInfo;
+        private HubSku _hubInfo;
         /// <summary>
         /// Initializes a new instance of the TabDashboardViewModel class.
         /// </summary>
-        public TabRequirementViewModel(IStressDataProvider provider,MainViewModel mainVM)
+        public TabRequirementViewModel(IStressDataProvider provider,MainViewModel mainVm)
         {
-            dataProvider = provider;
+            _dataProvider = provider;
            
-            iothubrecommendation = "Fill in every blank to get recommendation";
-            vmRecommendation= "Fill in every blank to get recommendation";
-            buttonEnabled = false;
+            _iothubrecommendation = "Fill in every blank to get recommendation";
+            _vmRecommendation= "Fill in every blank to get recommendation";
+            _buttonEnabled = false;
         }
 
         public RelayCommand MoveOn=>new RelayCommand(
@@ -45,13 +43,13 @@ namespace StressLoadDemo.ViewModel
             {
                 RequirementMessage message = new RequirementMessage()
                 {
-                    IoTHubSize = hubInfo.UnitSize,
-                    IoTHubUnitCount = hubInfo.UnitCount,
-                    AzureVmSize = vmInfo.Size,
-                    VmCount = vmInfo.VmCount,
-                    MessagePerMinPerDevice = messagePerMinute,
-                    NumberOfDevicePerVm = int.Parse(TotalDevice)/vmInfo.VmCount,
-                    TestDuration = testDuration
+                    IoTHubSize = _hubInfo.UnitSize,
+                    IoTHubUnitCount = _hubInfo.UnitCount,
+                    AzureVmSize = _vmInfo.Size,
+                    VmCount = _vmInfo.VmCount,
+                    MessagePerMinPerDevice = _messagePerMinute,
+                    NumberOfDevicePerVm = int.Parse(TotalDevice)/_vmInfo.VmCount,
+                    TestDuration = _testDuration
 
                 };
 
@@ -62,77 +60,77 @@ namespace StressLoadDemo.ViewModel
             );
         public bool ButtonEnabled
         {
-            get { return buttonEnabled; }
+            get { return _buttonEnabled; }
             set
             {
-                buttonEnabled = value;
+                _buttonEnabled = value;
                 RaisePropertyChanged();
             }
         }
         public string TotalDevice
         {
-            get {return totalDevice.ToString();}
+            get {return _totalDevice.ToString();}
             set
             {
-                int.TryParse(value, out totalDevice);
+                int.TryParse(value, out _totalDevice);
                 TryActivateButton();
             }
         }
         public string MessageFreq
         {
-            get { return messagePerMinute.ToString(); }
+            get { return _messagePerMinute.ToString(); }
             set
             {
-                int.TryParse(value,out messagePerMinute);
+                int.TryParse(value,out _messagePerMinute);
                 TryActivateButton();
-                RecommendHub(messagePerMinute);
+                RecommendHub(_messagePerMinute);
             }
         }
         public string TestDuration
         {
             get
-            { return testDuration.ToString(); }
+            { return _testDuration.ToString(); }
             set
             {
-                int.TryParse(value,out testDuration);
+                int.TryParse(value,out _testDuration);
                 TryActivateButton();
             }
         }
 
         public string HubSkuRecommendation
         {
-            get { return iothubrecommendation;}
+            get { return _iothubrecommendation;}
             set
             {
-                iothubrecommendation = value;
+                _iothubrecommendation = value;
                 RaisePropertyChanged();
             }
         }
         public string VmSkuRecommendation
         {
-            get { return vmRecommendation; }
+            get { return _vmRecommendation; }
             set
             {
-                vmRecommendation = value;
+                _vmRecommendation = value;
                 RaisePropertyChanged();
             }
         }
 
         public void RecommendHub(int messagePerminute)
         {
-            hubInfo = SKUCalculator.CalculateHubSku(messagePerminute);
-            HubSkuRecommendation = hubInfo.UnitSize.ToString() + " x " + hubInfo.UnitCount;
+            _hubInfo = SkuCalculator.CalculateHubSku(messagePerminute);
+            HubSkuRecommendation = _hubInfo.UnitSize.ToString() + " x " + _hubInfo.UnitCount;
         }
 
         public void TryActivateButton()
         {
-            if (testDuration != 0
-                && messagePerMinute != 0
-                && totalDevice != 0)
+            if (_testDuration != 0
+                && _messagePerMinute != 0
+                && _totalDevice != 0)
             {
-                var totalMessageCount = testDuration*messagePerMinute*totalDevice;
-                vmInfo = SKUCalculator.CalculateVmSku(totalMessageCount);
-                VmSkuRecommendation = vmInfo.Size.ToString() + " x " + vmInfo.VmCount;
+                var totalMessageCount = _testDuration*_messagePerMinute*_totalDevice;
+                _vmInfo = SkuCalculator.CalculateVmSku(totalMessageCount);
+                VmSkuRecommendation = _vmInfo.Size.ToString() + " x " + _vmInfo.VmCount;
                 ButtonEnabled = true;
             }
             else

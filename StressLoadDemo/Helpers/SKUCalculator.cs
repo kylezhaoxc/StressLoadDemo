@@ -1,14 +1,9 @@
 ﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using StressLoadDemo.Model;
 
 namespace StressLoadDemo.Helpers
 {
-    public static class SKUCalculator
+    public static class SkuCalculator
     {
         public const double IothubS1Speed = 720;
         public const double IothubS2Speed = 7200;
@@ -45,22 +40,22 @@ namespace StressLoadDemo.Helpers
             var sku = new VmSku();
             if (totalMessage > VmExtralargeCapacity)
             {
-                sku.Size=VMSize.Extralarge;
+                sku.Size=VmSize.Extralarge;
                 sku.VmCount = (int) Math.Ceiling(totalMessage/VmExtralargeCapacity);
             }
             else if (totalMessage > VmLargeCapacity)
             {
-                sku.Size=VMSize.Large;
+                sku.Size=VmSize.Large;
                 sku.VmCount= (int)Math.Ceiling(totalMessage / VmLargeCapacity);
             }
             else if (totalMessage > VmMediumCapacity)
             {
-                sku.Size = VMSize.Medium;
+                sku.Size = VmSize.Medium;
                 sku.VmCount = (int) Math.Ceiling(totalMessage/VmMediumCapacity);
             }
             else
             {
-                sku.Size=VMSize.Small;
+                sku.Size=VmSize.Small;
                 sku.VmCount = (int) Math.Ceiling(totalMessage/VmSmallCapacity);
 
             }

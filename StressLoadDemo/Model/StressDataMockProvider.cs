@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Media.Converters;
-using GalaSoft.MvvmLight.Messaging;
 
 namespace StressLoadDemo.Model
 {
@@ -22,50 +16,50 @@ namespace StressLoadDemo.Model
         public int MessagePerMinute { get; set; }
         public string VmSize { get; set; }
 
-        private double deviceNumber,messageNumber;
-        private Thread hubDeviceThread, hubMsgThread;
+        private double _deviceNumber,_messageNumber;
+        private Thread _hubDeviceThread, _hubMsgThread;
 
 
         public double GetDeviceNumber()
         {
-            return deviceNumber;
+            return _deviceNumber;
         }
 
 
         public double GetMessageNumber()
         {
-            return messageNumber;
+            return _messageNumber;
         }
 
         public void Run()
         {
-            hubDeviceThread = new Thread(()=> calculatesin());
-            hubMsgThread = new Thread(()=>calculateln());
-            hubDeviceThread.Start();
-            hubMsgThread.Start();
+            _hubDeviceThread = new Thread(()=> Calculatesin());
+            _hubMsgThread = new Thread(()=>Calculateln());
+            _hubDeviceThread.Start();
+            _hubMsgThread.Start();
             
             
         }
 
-        void calculatesin()
+        void Calculatesin()
         {
             while (true)
             {
                 for (double i = -10;; i += 0.1)
                 {
-                    deviceNumber = 20*Math.Sin(i);
+                    _deviceNumber = 20*Math.Sin(i);
                     Thread.Sleep(100);
                 }
             }
         }
 
-        void calculateln()
+        void Calculateln()
         {
             while (true)
             {
                 for (double i = 0; ; i += 0.1)
                 {
-                    messageNumber = Math.Tan(i);
+                    _messageNumber = Math.Tan(i);
                     Thread.Sleep(100);
                 }
             }
