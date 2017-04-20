@@ -93,6 +93,7 @@
     </Compile>
     <Compile Include="Helpers\SKUCalculator.cs" />
     <Compile Include="Model\HubSku.cs" />
+    <Compile Include="Model\MyLine.cs" />
     <Compile Include="Model\RequirementMessage.cs" />
     <Compile Include="Model\VmSku.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

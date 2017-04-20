@@ -20,8 +20,8 @@ namespace StressLoadDemo.Model
         int MessagePerMinute { get; set; }
         string VmSize { get; set; }
         
-        Task<int> GetDeviceNumber();
-        Task<int> GetMessageNumber();
-
+        double GetDeviceNumber();
+        double GetMessageNumber();
+        void Run();
     }
 }

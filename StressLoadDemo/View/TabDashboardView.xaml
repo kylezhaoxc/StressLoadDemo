@@ -36,12 +36,36 @@
         <Button x:Name="BtnStartTest" IsEnabled="{Binding CanStartTest}" Command="{Binding StartTest}" Content="Start Stress Load Test With Configuration Above" HorizontalAlignment="Left" Margin="10,294,0,0" VerticalAlignment="Top" Width="491" Height="33" FontSize="14"/>
         <GroupBox x:Name="GroupHubDevice"  Header="Hub Device" HorizontalAlignment="Left" Margin="525,14,-228,0" VerticalAlignment="Top" Height="146" Width="275" FontSize="14">
             <Canvas HorizontalAlignment="Left" Height="111" Margin="0,10,-2,0" VerticalAlignment="Top" Width="265">
-                <Image Source="/StressLoadDemo;component/ref_1.jpg" Height="140" Width="119" Canvas.Top="-15" Canvas.Left="59"/>
+                <Label Panel.ZIndex="1" Foreground="Red" Content="{Binding DeviceRealTimeNumber}" Canvas.Left="10" Canvas.Top="67" FontSize="18"></Label>
+                <ItemsControl ItemsSource="{Binding Path=DeviceLines}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas Background="White" Width="265" Height="111"  />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Line X1="{Binding X1}" Y1="{Binding Y1}" X2="{Binding X2}" Y2="{Binding Y2}" Stroke="Red" StrokeThickness="2"></Line>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </Canvas>
         </GroupBox>
         <GroupBox x:Name="GroupHubMessage" Header="Hub Message"  HorizontalAlignment="Left" Margin="525,160,-228,0" VerticalAlignment="Top" Height="167" Width="275" FontSize="14">
             <Canvas HorizontalAlignment="Left" Height="111" Margin="0,10,-2,0" VerticalAlignment="Top" Width="265">
-                <Image Source="/StressLoadDemo;component/ref_1.jpg" Height="140" Width="119" Canvas.Top="-16" Canvas.Left="60"/>
+                <Label Panel.ZIndex="1" Foreground="Blue" Content="{Binding MessageRealTimeNumber}" Canvas.Left="10" Canvas.Top="67" FontSize="18"></Label>
+                <ItemsControl ItemsSource="{Binding Path=MessageLines}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas Background="White" Width="265" Height="111"  />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Line X1="{Binding X1}" Y1="{Binding Y1}" X2="{Binding X2}" Y2="{Binding Y2}" Stroke="blue" StrokeThickness="2"></Line>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </Canvas>
         </GroupBox>
         <GroupBox x:Name="SummaryGroupBox" Header="Stress Load Test Summary" HorizontalAlignment="Left" Margin="0,332,0,0" VerticalAlignment="Top" Width="800" Height="Auto">
@@ -49,7 +73,7 @@
 
                 <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="189,113,0,0" VerticalAlignment="Top" Width="120"/>
                 <TextBlock x:Name="textBlock" Foreground="Black" Background="White" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="109" Width="768" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" UseLayoutRounding="False">
-                    
+
                 </TextBlock>
                 <Label x:Name="label" Content="IoT Hub Partition Id" HorizontalAlignment="Left" Margin="41,109,0,0" VerticalAlignment="Top" FontSize="14"/>
             </Grid>

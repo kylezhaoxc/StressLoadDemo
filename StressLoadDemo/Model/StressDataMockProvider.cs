@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Media.Converters;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace StressLoadDemo.Model
 {
@@ -19,16 +22,53 @@ namespace StressLoadDemo.Model
         public int MessagePerMinute { get; set; }
         public string VmSize { get; set; }
 
+        private double deviceNumber,messageNumber;
+        private Thread hubDeviceThread, hubMsgThread;
 
-        private static int querycount = 0;
-        public Task<int> GetDeviceNumber()
+
+        public double GetDeviceNumber()
         {
-            return Task.FromResult(querycount++);
+            return deviceNumber;
         }
 
-        public Task<int> GetMessageNumber()
+
+        public double GetMessageNumber()
         {
-            return Task.FromResult(2*querycount++);
+            return messageNumber;
+        }
+
+        public void Run()
+        {
+            hubDeviceThread = new Thread(()=> calculatesin());
+            hubMsgThread = new Thread(()=>calculateln());
+            hubDeviceThread.Start();
+            hubMsgThread.Start();
+            
+            
+        }
+
+        void calculatesin()
+        {
+            while (true)
+            {
+                for (double i = -10;; i += 0.1)
+                {
+                    deviceNumber = 20*Math.Sin(i);
+                    Thread.Sleep(100);
+                }
+            }
+        }
+
+        void calculateln()
+        {
+            while (true)
+            {
+                for (double i = 0; ; i += 0.1)
+                {
+                    messageNumber = Math.Tan(i);
+                    Thread.Sleep(100);
+                }
+            }
         }
     }
 }
